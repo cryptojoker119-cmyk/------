@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,24 +9,41 @@
     <style>
         /* 引入 Inter 字体和中文默认字体 */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
-        body { font-family: 'Inter', 'Microsoft YaHei', sans-serif; }
-        
+
+        body {
+            font-family: 'Inter', 'Microsoft YaHei', sans-serif;
+        }
+
         /* 简单动画：用于登录框和消息提示 */
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
+
         .animate-fadeIn {
             animation: fadeIn 0.5s ease-out;
         }
     </style>
 </head>
+
 <body class="bg-gray-100 min-h-screen flex items-center justify-center">
 
     <div class="w-full max-w-md p-8 space-y-8 bg-white rounded-xl shadow-2xl animate-fadeIn">
-        
+
         <div class="text-center">
-            <svg class="mx-auto h-12 w-auto text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1v-3.25m-7.25 0h12.5a.75.75 0 00.75-.75v-10.5a.75.75 0 00-.75-.75H4.25a.75.75 0 00-.75.75v10.5a.75.75 0 00.75.75z"></path></svg>
+            <svg class="mx-auto h-12 w-auto text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M9.75 17L9 20l-1 1h8l-1-1v-3.25m-7.25 0h12.5a.75.75 0 00.75-.75v-10.5a.75.75 0 00-.75-.75H4.25a.75.75 0 00-.75.75v10.5a.75.75 0 00.75.75z">
+                </path>
+            </svg>
             <h2 class="mt-4 text-3xl font-extrabold text-gray-900">
                 低空能力底座
             </h2>
@@ -35,49 +53,72 @@
         </div>
 
         <div id="messageBox" class="hidden p-3 rounded-lg text-sm transition duration-300" role="alert">
-            </div>
+        </div>
 
         <form id="loginForm" class="mt-8 space-y-6" onsubmit="return handleLogin(event)">
-            
+
             <div>
                 <label for="username" class="sr-only">账号/用户名</label>
                 <input id="username" name="username" type="text" autocomplete="username" required
-                       class="relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                       placeholder="账号/用户名">
+                    class="relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                    placeholder="账号/用户名">
             </div>
 
-            <div>
+            <div class="relative">
                 <label for="password" class="sr-only">密码</label>
                 <input id="password" name="password" type="password" autocomplete="current-password" required
-                       class="relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                       placeholder="密码">
+                    class="relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                    placeholder="密码">
+
+                <button type="button" onclick="togglePasswordVisibility()"
+                    class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-blue-600 transition-colors">
+                    <svg id="eyeOpenIcon" class="hidden h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+                    <svg id="eyeCloseIcon" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18" />
+                    </svg>
+                </button>
             </div>
 
             <div class="flex items-start space-x-3">
                 <div class="flex-grow">
                     <label for="captcha" class="sr-only">验证码</label>
                     <input id="captcha" name="captcha" type="text" required
-                           class="relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                           placeholder="验证码 (不区分大小写)">
+                        class="relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                        placeholder="验证码 (不区分大小写)">
                 </div>
-                
+
                 <div class="flex-shrink-0 flex flex-col items-center">
-                    <div id="captchaImage" class="w-28 h-10 bg-gray-200 rounded-md border border-gray-300 flex items-center justify-center text-lg font-bold select-none cursor-pointer text-gray-700"
-                         onclick="refreshCaptcha()">
-                        <span id="captchaText">ABCD</span> 
+                    <div id="captchaImage"
+                        class="w-28 h-10 bg-gray-200 rounded-md border border-gray-300 flex items-center justify-center text-lg font-bold select-none cursor-pointer text-gray-700"
+                        onclick="refreshCaptcha()">
+                        <span id="captchaText">ABCD</span>
                     </div>
-                    <button type="button" onclick="refreshCaptcha()" class="mt-1 text-xs text-blue-600 hover:text-blue-800 transition duration-150">
-                    看不清，换一张
-                     </button>
+                    <button type="button" onclick="refreshCaptcha()"
+                        class="mt-1 text-xs text-blue-600 hover:text-blue-800 transition duration-150">
+                        看不清，换一张
+                    </button>
                 </div>
             </div>
 
 
             <div>
                 <button type="submit"
-                        class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150">
+                    class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150">
                     <span id="loadingSpinner" class="hidden absolute left-0 inset-y-0 flex items-center pl-3">
-                        <svg class="h-5 w-5 text-blue-300 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                        <svg class="h-5 w-5 text-blue-300 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
+                            </circle>
+                            <path class="opacity-75" fill="currentColor"
+                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                            </path>
+                        </svg>
                     </span>
                     <span id="loginText">登 录</span>
                 </button>
@@ -87,7 +128,7 @@
 
     <script>
         // 模拟当前的正确验证码，实际应用中由后端生成
-        let currentCaptcha = 'ABCD'; 
+        let currentCaptcha = 'ABCD';
 
         /**
          * 显示消息提示框
@@ -98,7 +139,7 @@
         function showMessage(message, type = 'error', permanent = false) {
             const box = document.getElementById('messageBox');
             let baseClasses = 'p-3 mb-4 rounded-lg text-sm';
-            
+
             // 根据类型设置样式
             if (type === 'error') {
                 box.className = `${baseClasses} bg-red-100 text-red-700 border border-red-200`;
@@ -107,7 +148,7 @@
             } else if (type === 'warning') {
                 box.className = `${baseClasses} bg-yellow-100 text-yellow-700 border border-yellow-200`;
             }
-            
+
             box.textContent = message;
             box.classList.add('animate-fadeIn');
             box.classList.remove('hidden');
@@ -116,7 +157,7 @@
             if (!permanent) {
                 setTimeout(() => {
                     box.classList.add('hidden');
-                }, 5000); 
+                }, 5000);
             }
         }
 
@@ -139,17 +180,17 @@
         function refreshCaptcha() {
             currentCaptcha = generateRandomCaptcha();
             document.getElementById('captchaText').textContent = currentCaptcha;
-            
+
             // 清空验证码输入框
-            document.getElementById('captcha').value = ''; 
-            
+            document.getElementById('captcha').value = '';
+
             // 简单视觉反馈：模拟刷新动画
             const imageDiv = document.getElementById('captchaImage');
             imageDiv.classList.add('opacity-0', 'scale-90', 'transition-all');
             setTimeout(() => {
                 imageDiv.classList.remove('opacity-0', 'scale-90');
             }, 100);
-            
+
             console.log("验证码已刷新:", currentCaptcha);
         }
 
@@ -158,8 +199,8 @@
          * @param {Event} event 
          */
         function handleLogin(event) {
-            event.preventDefault(); 
-            
+            event.preventDefault();
+
             const username = document.getElementById('username').value.trim();
             const password = document.getElementById('password').value;
             const captchaInput = document.getElementById('captcha').value.trim();
@@ -167,7 +208,7 @@
             // 启用加载状态
             document.getElementById('loginText').textContent = '验证中...';
             document.getElementById('loadingSpinner').classList.remove('hidden');
-            
+
             // 模拟网络延迟
             setTimeout(() => {
                 // 1. 前端校验：三项字段均为必填
@@ -180,7 +221,7 @@
                 }
 
                 // 2. 后端校验：模拟逻辑
-                
+
                 // 模拟账号被禁用
                 if (username === 'disabled_user') {
                     showMessage('账号已被禁用，请联系管理员', 'error', true); // 永久显示
@@ -200,7 +241,7 @@
                     document.getElementById('loadingSpinner').classList.add('hidden');
                     return;
                 }
-                
+
                 // 4. 账号或密码校验 (模拟正确的账号/密码为 admin/123456)
                 if (username !== 'admin' || password !== '123456') {
                     showMessage('账号或密码错误', 'error');
@@ -211,23 +252,45 @@
                     document.getElementById('loadingSpinner').classList.add('hidden');
                     return;
                 }
-                
+
                 // 5. 登录成功
                 showMessage('登录成功！正在跳转...', 'success');
                 // 模拟跳转
                 setTimeout(() => {
                     window.location.href = 'homePage.html'
-                    
+
                     // 禁用加载状态
                     document.getElementById('loginText').textContent = '登 录';
                     document.getElementById('loadingSpinner').classList.add('hidden');
-                }, 1000); 
+                }, 1000);
 
             }, 500); // 模拟500ms的后端处理延迟
         }
 
         // 初始化时刷新一次验证码
         window.onload = refreshCaptcha;
+
+        /**
+ * 切换密码显示/隐藏状态
+ */
+        function togglePasswordVisibility() {
+            const passwordInput = document.getElementById('password');
+            const eyeOpenIcon = document.getElementById('eyeOpenIcon');
+            const eyeCloseIcon = document.getElementById('eyeCloseIcon');
+
+            if (passwordInput.type === 'password') {
+                // 切换为明文
+                passwordInput.type = 'text';
+                eyeOpenIcon.classList.remove('hidden');
+                eyeCloseIcon.classList.add('hidden');
+            } else {
+                // 切换为掩码
+                passwordInput.type = 'password';
+                eyeOpenIcon.classList.add('hidden');
+                eyeCloseIcon.classList.remove('hidden');
+            }
+        }
     </script>
 </body>
+
 </html>
